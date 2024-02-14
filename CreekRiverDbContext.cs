@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using CreekRiver.Models;
+using System.Security.Principal;
+using System;
 
 public class CreekRiverDbContext : DbContext
 {
@@ -32,6 +34,16 @@ public class CreekRiverDbContext : DbContext
         new Campsite {Id = 3, CampsiteTypeId = 2, Nickname = "Squeaky Duck", ImageUrl="https://tnstateparks.com/assets/images/content-images/campgrounds/249/colsp-area2-site73.jpg"},
         new Campsite {Id = 4, CampsiteTypeId = 3, Nickname = "Round Cat", ImageUrl="https://tnstateparks.com/assets/images/content-images/campgrounds/249/colsp-area2-site73.jpg"},
         new Campsite {Id = 5, CampsiteTypeId = 4, Nickname = "Ovuncular Bird", ImageUrl="https://tnstateparks.com/assets/images/content-images/campgrounds/249/colsp-area2-site73.jpg"},
-        }
-}
+        });
+
+        modelBuilder.Entity<Reservation>().HasData(new Reservation[]
+        { 
+        new Reservation { Id = 1, CampsiteId = 1, UserProfileId = 1, CheckinDate = new DateTime(2024, 2, 13), CheckoutDate = new DateTime(2024, 2, 17) }
+        });
+
+        modelBuilder.Entity<UserProfile>().HasData(new UserProfile[]
+        {
+        new UserProfile {Id = 1, FirstName = "Salem", LastName = "Witchy", Email = "salemwitchy@meowmail.com" }
+        });
+    }
 }
