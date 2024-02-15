@@ -87,4 +87,32 @@ app.MapGet("/api/reservations", (CreekRiverDbContext db) =>
 });
 
 
+app.MapPost("/api/reservations", (CreekRiverDbContext db, Reservation newRes) =>
+{
+    try
+    {
+        db.Reservations.Add(newRes);
+        db.SaveChanges();
+        return Results.Created($"/api/reservations/{newRes.Id}", newRes);
+    }
+    catch (DbUpdateException)
+    {
+        return Results.BadRequest("Invalid data submitted");
+    }
+});
+
+app.MapDelete("/api/reservations/{id}", (CreekRiverDbContext db, int id) =>
+{
+    Reservation reservations = db.Reservations.SingleOrDefault(campsite => campsite.Id == id);
+    if (reservations == null)
+    {
+        return Results.NotFound();
+    }
+    db.Reservations.Remove(reservations);
+    db.SaveChanges();
+    return Results.NoContent();
+
+});
+
+
 app.Run();
